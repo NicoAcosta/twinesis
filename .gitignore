@@ -10,3 +10,6 @@ artifacts
 
 #Mac
 .DS_Store
+
+revealed
+metadata/**/*.json
