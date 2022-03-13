@@ -6,7 +6,7 @@ module.exports = {
 	description: `The Genesis NFT project from Twinny Twin.
 3 designs. 222 items available. 1 dream.
 
-*What is TWINESIS?*
+**What is TWINESIS?**
 
 Introducing Crib Music: House music with extra sauce
 
