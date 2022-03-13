@@ -1,4 +1,4 @@
-const splitter = 'splitter_address'
+const testnet_splitter = '0xEAD7d127776206C3a96c5A6F1516E4Ba5e43D231'
 
 module.exports = {
 	url: 'https://twinnytwin.io/',
@@ -14,6 +14,6 @@ TWINESIS, (Twin+Genesis), is the first official NFT collection from Twinny Twin 
 
 Crib, being slang for house, or home fits well, hint the hip-hop influence in his expression of house music. Each NFT is a representation of beginnings, encompassing the city of St. Louis, Twinny Twin's hometown, inside of his logo as a celebration of the place that is responsible for his foundation. Here's your chance to join his and the journey of others. It all starts here.`,
 	fee_points: 1000,
-	fee_recipient: testC,
+	fee_recipient: testnet_splitter,
 	collection_icon_extension: 'gif'
 }
