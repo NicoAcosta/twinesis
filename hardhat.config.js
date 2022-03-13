@@ -10,10 +10,10 @@ require('hardhat-abi-exporter')
 module.exports = {
 	solidity: '0.8.9',
 	networks: {
-		mainnet: {
-			url: process.env.MAINNET_NODE_URL,
-			accounts: [process.env.MAINNET_DEPLOYER_PRIVATE_KEY]
-		},
+		// mainnet: {
+		// 	url: process.env.MAINNET_NODE_URL,
+		// 	accounts: [process.env.MAINNET_DEPLOYER_PRIVATE_KEY]
+		// },
 		rinkeby: {
 			url: process.env.RINKEBY_NODE_URL,
 			accounts: [process.env.TESTNET_DEPLOYER_PRIVATE_KEY]
