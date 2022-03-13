@@ -17,7 +17,7 @@ const unrevealedURI = require('../unrevealed/uris').media
 class CollectionMetadata {
 	constructor(uri) {
 		;(this.name = data.name),
-			(this.description = data.collection_description),
+			(this.description = data.description),
 			(this.image =
 				'https://ipfs.io/ipfs/' +
 				uri +
@@ -39,7 +39,7 @@ class TokenMetadata {
 		} (${percentage}%)`
 
 		this.external_url = data.url
-		this.description = data.token_description
+		this.description = data.description
 
 		this.attributes = [
 			{trait_type: 'Level', value: level.name},
