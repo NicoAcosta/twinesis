@@ -80,14 +80,18 @@ describe.only('Twinesis', async function () {
 	})
 
 	describe('Deployment constructor', async function () {
-		it('Should mint tokens for artist and developer', async function () {
-			expect(await contract.balanceOf(artist)).to.equal(4)
+		it('Should mint tokens for artist developer and deployer', async function () {
+			expect(await contract.balanceOf(artist)).to.equal(2)
+
+			expect(await contract.balanceOf(deployer.address)).to.equal(2)
 
 			expect(await contract.balanceOf(developer)).to.equal(2)
 
-			expect(await contract.ownerOf(5)).to.equal(artist)
+			expect(await contract.ownerOf(20)).to.equal(artist)
 
 			expect(await contract.ownerOf(8)).to.equal(developer)
+
+			expect(await contract.ownerOf(222)).to.equal(deployer.address)
 
 			expect(await contract.mintedTokens()).to.equal(6)
 		})
