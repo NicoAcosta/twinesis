@@ -35,31 +35,31 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
  *
  *          3.  State variables .............................. 103
  *
- *          4.  Constructor .................................. 154
+ *          4.  Constructor .................................. 160
  *
- *          5.  Minting ...................................... 187
+ *          5.  Minting ...................................... 195
  *
- *                  A.  Public minting ....................... 232
+ *                  A.  Public minting ....................... 240
  *
- *                  B.  Internal minting ..................... 263
+ *                  B.  Internal minting ..................... 271
  *
- *          6.  Metadata ..................................... 297
+ *          6.  Metadata ..................................... 305
  *
- *                  A.  Revealable metadata .................. 302
+ *                  A.  Revealable metadata .................. 310
  *
- *                  B.  Contract URI ......................... 334
+ *                  B.  Contract URI ......................... 330
  *
- *                  C.  Token URI ............................ 345
+ *                  C.  Token URI ............................ 341
  *
- *                          1.  Rarities ..................... 380
+ *                          1.  Rarities ..................... 376
  *
- *                          2.  Levels ....................... 400
+ *                          2.  Levels ....................... 396
  *
- *                                  A.  Outset date .......... 419
+ *                                  A.  Outset date .......... 415
  *
- *                          3.  Journey percentage ........... 462
+ *                          3.  Journey percentage ........... 458
  *
- *          7.  Withdrawal ................................... 480
+ *          7.  Withdrawal ................................... 476
  *
  */
 
@@ -130,7 +130,7 @@ contract Twinesis is ITwinesis, ERC721, Ownable {
     /// @notice Rarities reveal date
     /// @dev Used to return metadata
     /// @return RARITIES_REVEAL_DATE Public minting start date
-    uint256 public constant RARITIES_REVEAL_DATE = 1647295200; 	// Mon Mar 14 22:00:00 2022 UTC
+    uint256 public constant RARITIES_REVEAL_DATE = 1647295200; // Mon Mar 14 22:00:00 2022 UTC
 
     /// @notice Date from which the contract starts to count to calculate its level.
     /// @dev Used to calculate a token's level. When it was minted or transfered if it was not at maximum level

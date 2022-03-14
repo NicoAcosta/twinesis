@@ -13,7 +13,14 @@ contract TestnetTwinesis is Twinesis {
         address withdrawalAddress1_,
         address withdrawalAddress2_,
         string memory name_
-    ) Twinesis(unrevealedBaseURI_, revealedBaseURI_, withdrawalAddress1_, withdrawalAddress2_) {
+    )
+        Twinesis(
+            unrevealedBaseURI_,
+            revealedBaseURI_,
+            withdrawalAddress1_,
+            withdrawalAddress2_
+        )
+    {
         _mintPreviously(3, 1 days); // collector
         _mintPreviously(12, 59.9 days); // collector, almost believer
         _mintPreviously(20, 80 days); // believer
