@@ -27,8 +27,6 @@ interface ITwinesis is IERC721 {
 
     function raritiesHaveBeenRevealed() external view returns (bool);
 
-    function revealRarities(string memory newBaseURI) external;
-
     function rarity(uint256 tokenId) external view returns (Rarity);
 
     function level(uint256 tokenId) external view returns (Level);

@@ -10,18 +10,15 @@ const developer = ethers.utils.getAddress(
 	'0xab468Aec9bB4b9bc59b2B2A5ce7F0B299293991f'
 )
 
-const publicMintingDate = 1647298800
+const publicMintingDate = 1647284400
+const revealDate = 1647295200
 const days = 86400
 
 const unrevealedRaritiesBaseURI =
-	'https://ipfs.io/ipfs/' +
-	require('../metadata/testing/unrevealed/uris').json +
-	'/'
+	'https://ipfs.io/ipfs/' + require('../metadata/unrevealed/uris').json + '/'
 
 const revealedRaritiesBaseURI =
-	'https://ipfs.io/ipfs/' +
-	require('../metadata/testing/revealed/uris').json +
-	'/'
+	'https://ipfs.io/ipfs/' + require('../metadata/revealed/uris').json + '/'
 
 describe.only('Twinesis', async function () {
 	let contract, deploymentTimestamp
@@ -46,6 +43,7 @@ describe.only('Twinesis', async function () {
 		const Contract = await ethers.getContractFactory('Twinesis')
 		contract = await Contract.deploy(
 			unrevealedRaritiesBaseURI,
+			revealedRaritiesBaseURI,
 			withdrawal1.address,
 			withdrawal2.address
 		)
@@ -143,36 +141,136 @@ describe.only('Twinesis', async function () {
 		})
 	})
 
-	async function revealRarities() {
-		const tx = await contract.revealRarities(revealedRaritiesBaseURI)
-		await tx.wait()
-	}
-
-	describe('Rarities', async function () {
-		beforeEach(async function () {
-			await mintAll()
-			await revealRarities()
-		})
-
-		it('Should mint 22 gold, 66 red, 134 blue', async function () {
-			const counter = {0: 0, 1: 0, 2: 0}
-
-			for (let tokenId = 1; tokenId < 223; tokenId++) {
-				const r = await contract.rarity(tokenId)
-				counter[r] += 1
-			}
-
-			expect(counter[2]).to.equal(22)
-			expect(counter[1]).to.equal(66)
-			expect(counter[0]).to.equal(134)
-		})
-
-		it('Should return expected rarities', async function () {
-			for (let tokenId = 1; tokenId < 223; tokenId++) {
-				expect(await contract.rarity(tokenId)).to.equal(
-					expectedRarity(tokenId)
+	describe('URIs', async function () {
+		describe('Unrevealed URI', async function () {
+			it('Should return metadata not revealed', async function () {
+				expect(await contract.raritiesHaveBeenRevealed()).to.equal(
+					false
 				)
-			}
+			})
+
+			describe('Unrevealed contract URI', async function () {
+				it('Should return unrevealed contract URI', async function () {})
+			})
+
+			describe('Unrevealed token URI', async function () {
+				it('Should return unrevealed token URI', async function () {
+					await mintAll()
+
+					expect(await contract.tokenURI(1)).to.equal(
+						unrevealedRaritiesBaseURI +
+							'unrevealed-collector-0.json'
+					)
+					expect(await contract.tokenURI(87)).to.equal(
+						unrevealedRaritiesBaseURI +
+							'unrevealed-collector-0.json'
+					)
+					expect(await contract.tokenURI(211)).to.equal(
+						unrevealedRaritiesBaseURI +
+							'unrevealed-collector-0.json'
+					)
+				})
+			})
+		})
+
+		describe('Revealed URI', async function () {
+			before(async function () {
+				await setTimestamp(revealDate + 1)
+			})
+
+			it('Should return metadata revealed', async function () {
+				expect(await contract.raritiesHaveBeenRevealed()).to.equal(true)
+			})
+
+			describe('Revealed contract URI', async function () {
+				it('Should return revealed contract URI', async function () {
+					expect(await contract.contractURI()).to.equal(
+						uri('collection')
+					)
+				})
+			})
+
+			describe('Revealed Token URIs', async function () {
+				let tokenURI
+
+				beforeEach(async function () {
+					await mintAll()
+				})
+
+				describe('Rarities', async function () {
+					it('Should return expected rarity URI', async function () {
+						for (let tokenId = 1; tokenId < 223; tokenId++) {
+							const rarity = rarityString(tokenId)
+							expect(await contract.tokenURI(tokenId)).to.equal(
+								uri(rarity + '-collector-0')
+							)
+						}
+					})
+				})
+
+				describe('Levels', async function () {
+					it('Should return collector level URIs', async function () {
+						tokenURI = 'red-collector-0'
+						expect(await contract.tokenURI(1)).to.equal(
+							uri(tokenURI)
+						)
+
+						tokenURI = 'red-collector-33'
+						await skipDaysFromDeployment(59.8)
+						expect(await contract.tokenURI(1)).to.equal(
+							uri(tokenURI)
+						)
+					})
+
+					it('Should return believer level URIs', async function () {
+						tokenURI = 'red-believer-33'
+						await skipDaysFromDeployment(60)
+						expect(await contract.tokenURI(1)).to.equal(
+							uri(tokenURI)
+						)
+
+						tokenURI = 'red-believer-66'
+						await skipDaysFromDeployment(119)
+						expect(await contract.tokenURI(1)).to.equal(
+							uri(tokenURI)
+						)
+					})
+
+					it('Should return supporter level URIs', async function () {
+						tokenURI = 'red-supporter-66'
+
+						await skipDaysFromDeployment(120)
+						expect(await contract.tokenURI(1)).to.equal(
+							uri(tokenURI)
+						)
+
+						tokenURI = 'red-supporter-99'
+						await skipDaysFromDeployment(179)
+						expect(await contract.tokenURI(1)).to.equal(
+							uri(tokenURI)
+						)
+					})
+
+					it('Should return fourth level URIs', async function () {
+						tokenURI = 'red-fan-100'
+
+						await skipDaysFromDeployment(180)
+						expect(await contract.tokenURI(1)).to.equal(
+							uri(tokenURI)
+						)
+
+						await skipDaysFromDeployment(200)
+						expect(await contract.tokenURI(1)).to.equal(
+							uri(tokenURI)
+						)
+
+						await skipDaysFromDeployment(500)
+						expect(await contract.tokenURI(1)).to.equal(
+							uri(tokenURI)
+						)
+					})
+				})
+			})
 		})
 	})
 
@@ -317,136 +415,30 @@ describe.only('Twinesis', async function () {
 		})
 	})
 
-	describe('URIs', async function () {
-		describe('Unrevealed URI', async function () {
-			it('Should return metadata not revealed', async function () {
-				expect(await contract.raritiesHaveBeenRevealed()).to.equal(
-					false
-				)
-			})
-
-			describe('Unrevealed contract URI', async function () {
-				it('Should return unrevealed contract URI', async function () {})
-			})
-
-			describe('Unrevealed token URI', async function () {
-				it('Should return unrevealed token URI', async function () {
-					await mintAll()
-
-					expect(await contract.tokenURI(1)).to.equal(
-						unrevealedRaritiesBaseURI +
-							'unrevealed-collector-0.json'
-					)
-					expect(await contract.tokenURI(87)).to.equal(
-						unrevealedRaritiesBaseURI +
-							'unrevealed-collector-0.json'
-					)
-					expect(await contract.tokenURI(211)).to.equal(
-						unrevealedRaritiesBaseURI +
-							'unrevealed-collector-0.json'
-					)
-				})
-			})
+	describe('Rarities', async function () {
+		beforeEach(async function () {
+			await mintAll()
 		})
 
-		describe('Revealed URI', async function () {
-			beforeEach(async function () {
-				await revealRarities()
-			})
+		it('Should mint 22 gold, 66 red, 134 blue', async function () {
+			const counter = {0: 0, 1: 0, 2: 0}
 
-			it('Should return metadata revealed', async function () {
-				expect(await contract.raritiesHaveBeenRevealed()).to.equal(true)
-			})
+			for (let tokenId = 1; tokenId < 223; tokenId++) {
+				const r = await contract.rarity(tokenId)
+				counter[r] += 1
+			}
 
-			describe('Revealed contract URI', async function () {
-				it('Should return revealed contract URI', async function () {
-					expect(await contract.contractURI()).to.equal(
-						uri('collection')
-					)
-				})
-			})
+			expect(counter[2]).to.equal(22)
+			expect(counter[1]).to.equal(66)
+			expect(counter[0]).to.equal(134)
+		})
 
-			describe('Revealed Token URIs', async function () {
-				let tokenURI
-
-				beforeEach(async function () {
-					await mintAll()
-				})
-
-				describe('Rarities', async function () {
-					it('Should return expected rarity URI', async function () {
-						for (let tokenId = 1; tokenId < 223; tokenId++) {
-							const rarity = rarityString(tokenId)
-							expect(await contract.tokenURI(tokenId)).to.equal(
-								uri(rarity + '-collector-0')
-							)
-						}
-					})
-				})
-
-				describe('Levels', async function () {
-					it('Should return collector level URIs', async function () {
-						tokenURI = 'red-collector-0'
-						expect(await contract.tokenURI(1)).to.equal(
-							uri(tokenURI)
-						)
-
-						tokenURI = 'red-collector-33'
-						await skipDaysFromDeployment(59.8)
-						expect(await contract.tokenURI(1)).to.equal(
-							uri(tokenURI)
-						)
-					})
-
-					it('Should return believer level URIs', async function () {
-						tokenURI = 'red-believer-33'
-						await skipDaysFromDeployment(60)
-						expect(await contract.tokenURI(1)).to.equal(
-							uri(tokenURI)
-						)
-
-						tokenURI = 'red-believer-66'
-						await skipDaysFromDeployment(119)
-						expect(await contract.tokenURI(1)).to.equal(
-							uri(tokenURI)
-						)
-					})
-
-					it('Should return supporter level URIs', async function () {
-						tokenURI = 'red-supporter-66'
-
-						await skipDaysFromDeployment(120)
-						expect(await contract.tokenURI(1)).to.equal(
-							uri(tokenURI)
-						)
-
-						tokenURI = 'red-supporter-99'
-						await skipDaysFromDeployment(179)
-						expect(await contract.tokenURI(1)).to.equal(
-							uri(tokenURI)
-						)
-					})
-
-					it('Should return fourth level URIs', async function () {
-						tokenURI = 'red-fan-100'
-
-						await skipDaysFromDeployment(180)
-						expect(await contract.tokenURI(1)).to.equal(
-							uri(tokenURI)
-						)
-
-						await skipDaysFromDeployment(200)
-						expect(await contract.tokenURI(1)).to.equal(
-							uri(tokenURI)
-						)
-
-						await skipDaysFromDeployment(500)
-						expect(await contract.tokenURI(1)).to.equal(
-							uri(tokenURI)
-						)
-					})
-				})
-			})
+		it('Should return expected rarities', async function () {
+			for (let tokenId = 1; tokenId < 223; tokenId++) {
+				expect(await contract.rarity(tokenId)).to.equal(
+					expectedRarity(tokenId)
+				)
+			}
 		})
 	})
 

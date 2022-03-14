@@ -1,5 +1,5 @@
 [
-  "constructor(string,address,address)",
+  "constructor(string,string,address,address)",
   "event Approval(address indexed,address indexed,uint256 indexed)",
   "event ApprovalForAll(address indexed,address indexed,bool)",
   "event NewOutsetDate(uint256 indexed,uint256)",
@@ -8,6 +8,7 @@
   "function MAX_TOKENS() view returns (uint256)",
   "function MINTING_PRICE() view returns (uint256)",
   "function PUBLIC_MINTING_START_DATE() view returns (uint256)",
+  "function RARITIES_REVEAL_DATE() view returns (uint256)",
   "function approve(address,uint256)",
   "function balanceOf(address) view returns (uint256)",
   "function contractURI() view returns (string)",
@@ -26,7 +27,6 @@
   "function raritiesHaveBeenRevealed() view returns (bool)",
   "function rarity(uint256) view returns (uint8)",
   "function renounceOwnership()",
-  "function revealRarities(string)",
   "function safeTransferFrom(address,address,uint256)",
   "function safeTransferFrom(address,address,uint256,bytes)",
   "function setApprovalForAll(address,bool)",

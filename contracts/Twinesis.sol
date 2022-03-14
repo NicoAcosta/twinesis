@@ -125,7 +125,12 @@ contract Twinesis is ITwinesis, ERC721, Ownable {
     /// @notice Public minting start date
     /// @dev Used in public minting functions
     /// @return PUBLIC_MINTING_START_DATE Public minting start date
-    uint256 public constant PUBLIC_MINTING_START_DATE = 1647298800; // 2022-03-14 20:00:00
+    uint256 public constant PUBLIC_MINTING_START_DATE = 1647284400; // Mon Mar 14 19:00:00 2022 UTC
+
+    /// @notice Rarities reveal date
+    /// @dev Used to return metadata
+    /// @return RARITIES_REVEAL_DATE Public minting start date
+    uint256 public constant RARITIES_REVEAL_DATE = 1647295200; 	// Mon Mar 14 22:00:00 2022 UTC
 
     /// @notice Date from which the contract starts to count to calculate its level.
     /// @dev Used to calculate a token's level. When it was minted or transfered if it was not at maximum level
@@ -144,6 +149,7 @@ contract Twinesis is ITwinesis, ERC721, Ownable {
     string private _unrevealedRaritiesBaseURI;
 
     /// @notice Revealed rarities base metadata IPFS URI. Only can be set once.
+    /// @dev Initialized at deployment
     string private _revealedRaritiesBaseURI;
 
     /// @notice Addresses for ETH withdrawal
@@ -156,12 +162,14 @@ contract Twinesis is ITwinesis, ERC721, Ownable {
 
     /// @notice run at deployment
     constructor(
-        string memory unrevealedBaseURI_,
+        string memory unrevealedRaritiesBaseURI_,
+        string memory revealedRaritiesBaseURI_,
         address withdrawalAddress1_,
         address withdrawalAddress2_
     ) ERC721("Twinesis", "TWN1") {
-        // Set unreaveled base metadata IPFS URI
-        _unrevealedRaritiesBaseURI = unrevealedBaseURI_;
+        // Set unreaveled and revealed rarities base metadata IPFS URI
+        _unrevealedRaritiesBaseURI = unrevealedRaritiesBaseURI_;
+        _revealedRaritiesBaseURI = revealedRaritiesBaseURI_;
 
         // Set withdrawal addresses
         _withdrawalAddress1 = withdrawalAddress1_;
@@ -312,19 +320,10 @@ contract Twinesis is ITwinesis, ERC721, Ownable {
     }
 
     /// @notice Verifies if rarities have been revealed
-    /// @dev If rarities have been revealed, `_revealedRaritiesBaseURI` length would be greater than 0, as it is empty by default.
+    /// @dev Used for metadata functions
     /// @return bool whether rarities have been revealed
     function raritiesHaveBeenRevealed() public view returns (bool) {
-        return bytes(_revealedRaritiesBaseURI).length > 0;
-    }
-
-    /// @notice Reveal rarities metadata. Contract and token metadata will be based on this new IPFS URI. It can only be run once.
-    /// @param newBaseURI New base URI to be set
-    function revealRarities(string memory newBaseURI) public onlyOwner {
-        // Can only be run once
-        require(!raritiesHaveBeenRevealed(), "Metadata already revealed");
-
-        _revealedRaritiesBaseURI = newBaseURI;
+        return block.timestamp > RARITIES_REVEAL_DATE;
     }
 
     /// ----------------------
