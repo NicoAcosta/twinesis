@@ -130,7 +130,7 @@ contract Twinesis is ITwinesis, ERC721, Ownable {
     /// @notice Rarities reveal date
     /// @dev Used to return metadata
     /// @return RARITIES_REVEAL_DATE Public minting start date
-    uint256 public constant RARITIES_REVEAL_DATE = 1647295200; // Mon Mar 14 22:00:00 2022 UTC
+    uint256 public constant RARITIES_REVEAL_DATE = 1647300000; // Mon Mar 14 23:20:00 2022 UTC
 
     /// @notice Date from which the contract starts to count to calculate its level.
     /// @dev Used to calculate a token's level. When it was minted or transfered if it was not at maximum level
