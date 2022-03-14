@@ -34,7 +34,7 @@ class CollectionMetadata {
 
 class TokenMetadata {
 	constructor(rarity, level, percentage) {
-		this.name = `${data.name} ${rarity.toUpperCase()} | ${
+		this.name = `${data.name.toUpperCase()} | ${
 			level.name
 		} (${percentage}%)`
 

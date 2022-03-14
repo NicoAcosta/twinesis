@@ -23,7 +23,7 @@ async function main() {
 		revealedRaritiesBaseURI,
 		process.env.TESTNET_WITHDRAWAL_1,
 		process.env.TESTNET_WITHDRAWAL_2,
-		'Twinesis v0.2'
+		'Twinesis v0.3'
 	)
 
 	const tx = contract.deployTransaction

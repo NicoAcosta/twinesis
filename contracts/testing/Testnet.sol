@@ -23,7 +23,7 @@ contract TestnetTwinesis is Twinesis {
     {
         _mintPreviously(3, 1 days); // collector
         _mintPreviously(12, 59.9 days); // collector, almost believer
-        _mintPreviously(20, 80 days); // believer
+        _mintPreviously(40, 80 days); // believer
         _mintPreviously(25, 119.9 days); // believer, almost supporter
         _mintPreviously(30, 140 days); // supporter
         _mintPreviously(35, 179.9 days); // supporter, almost fan

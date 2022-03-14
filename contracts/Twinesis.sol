@@ -166,7 +166,7 @@ contract Twinesis is ITwinesis, ERC721, Ownable {
         string memory revealedRaritiesBaseURI_,
         address withdrawalAddress1_,
         address withdrawalAddress2_
-    ) ERC721("Twinesis", "TWN1") {
+    ) ERC721("TWINESIS", "TWN1") {
         // Set unreaveled and revealed rarities base metadata IPFS URI
         _unrevealedRaritiesBaseURI = unrevealedRaritiesBaseURI_;
         _revealedRaritiesBaseURI = revealedRaritiesBaseURI_;
