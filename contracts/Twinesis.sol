@@ -177,11 +177,11 @@ contract Twinesis is ITwinesis, ERC721, Ownable {
 
         // Mint tokens to artist and dev
         _safeMint(ARTIST, 1);
-        _safeMint(ARTIST, 5);
         _safeMint(DEV, 8);
         _safeMint(DEV, 10);
-        _safeMint(ARTIST, 100);
-        _safeMint(ARTIST, 202);
+        _safeMint(ARTIST, 20);
+        _safeMint(msg.sender, 217);
+        _safeMint(msg.sender, 222);
 
         // Set minted tokens to 6
         mintedTokens = 6;

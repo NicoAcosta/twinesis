@@ -11,7 +11,7 @@ const developer = ethers.utils.getAddress(
 )
 
 const publicMintingDate = 1647284400
-const revealDate = 1647295200
+const revealDate = 1647300000
 const days = 86400
 
 const unrevealedRaritiesBaseURI =
@@ -124,7 +124,7 @@ describe.only('Twinesis', async function () {
 		})
 
 		it('Should mint all ids', async function () {
-			const ids = [1, 5, 8, 10, 100, 202]
+			const ids = [1, 8, 10, 20, 217, 222]
 
 			for (let i = 0; i < 216; i++) {
 				const minting = await mintTwin(addr1)
@@ -426,6 +426,8 @@ describe.only('Twinesis', async function () {
 			for (let tokenId = 1; tokenId < 223; tokenId++) {
 				const r = await contract.rarity(tokenId)
 				counter[r] += 1
+
+				console.log(tokenId, r)
 			}
 
 			expect(counter[2]).to.equal(22)
