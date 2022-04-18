@@ -31,7 +31,6 @@ describe.only('Twinesis', async function () {
 			deployer,
 			withdrawal1,
 			withdrawal2,
-			creator,
 			whitelisted,
 			addr1,
 			addr2,
